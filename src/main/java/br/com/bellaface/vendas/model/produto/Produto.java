@@ -1,4 +1,4 @@
-package br.com.bellaface.vendas.model;
+package br.com.bellaface.vendas.model.produto;
 
 import java.time.LocalDate;
 

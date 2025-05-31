@@ -1,4 +1,4 @@
-package br.com.bellaface.vendas.controller;
+package br.com.bellaface.vendas.controller.produto;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.bellaface.vendas.dto.CadastroDeProduto;
-import br.com.bellaface.vendas.model.Produto;
-import br.com.bellaface.vendas.repository.ProdutoRepository;
+import br.com.bellaface.vendas.dto.produto.CadastroDeProduto;
+import br.com.bellaface.vendas.model.produto.Produto;
+import br.com.bellaface.vendas.repository.produto.ProdutoRepository;
 
 @RestController
 @RequestMapping("produto")
