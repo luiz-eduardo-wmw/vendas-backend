@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bellaface.vendas.dto.itemPedido.CadastroDeItemPedido;
@@ -24,8 +25,14 @@ public class ItemPedidoController {
 	
 	@GetMapping
 	public ResponseEntity<?> listaDeItensPedido() {
-		List<ItemPedido> listaDePedidos = itemPedidoRepository.findAll();
-		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDePedidos));
+		List<ItemPedido> listaDeItensPedido = itemPedidoRepository.findAll();
+		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDeItensPedido));
+	}
+	
+	@GetMapping("nuPedido")
+	public ResponseEntity<?> listaItensPedidoByNuPedido(@RequestParam Integer nuPedido) {
+		List<ItemPedido> listaDeItensPedido = itemPedidoRepository.findByNuPedido(nuPedido);
+		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDeItensPedido));
 	}
 	
 	@PostMapping
