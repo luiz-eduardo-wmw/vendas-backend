@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,8 +38,9 @@ public class ClienteController {
 			LocalDate dtAlteracao = LocalDate.now();
 			LocalDate dtCriacao = LocalDate.now();
 			
-			return clienteRepository.save(new Cliente(cadastroDeCliente.cdCliente(), cadastroDeCliente.nmRazaoSocial(), cadastroDeCliente.dsLogin(), cadastroDeCliente.dsSenha(), flTipoAlteracao, flAtivo, dtAlteracao, dtCriacao));
-		}
-		
+			String encryptedPassword = new BCryptPasswordEncoder().encode(cadastroDeCliente.dsSenha());
+			
+			return clienteRepository.save(new Cliente(cadastroDeCliente.cdCliente(), cadastroDeCliente.nmRazaoSocial(), cadastroDeCliente.dsLogin(), encryptedPassword, flTipoAlteracao, flAtivo, dtAlteracao, dtCriacao));
+		}	
 
 }

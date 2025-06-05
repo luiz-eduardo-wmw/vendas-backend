@@ -1,6 +1,12 @@
 package br.com.bellaface.vendas.model.cliente;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cliente {
+public class Cliente implements UserDetails{
 	@Id
 	@Column(name = "cdCliente")
 	private Integer cdCliente;
@@ -40,4 +46,19 @@ public class Cliente {
 	
 	@Column(name = "dtCriacao")
 	private LocalDate dtCriacao;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority("CLIENTE"));
+	}
+	
+	@Override
+	public String getPassword() {
+		return this.dsSenha;
+	}
+	
+	@Override
+	public String getUsername() {
+		return this.dsLogin;
+	}
 }
