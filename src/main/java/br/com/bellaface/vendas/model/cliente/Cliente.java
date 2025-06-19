@@ -1,6 +1,5 @@
 package br.com.bellaface.vendas.model.cliente;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,18 +33,6 @@ public class Cliente implements UserDetails{
 	
 	@Column(name = "dsSenha")
 	private String dsSenha;
-	
-	@Column(name = "flTipoAlteracao")
-	private String flTipoAlteracao;
-	
-	@Column(name = "flAtivo")
-	private String flAtivo;
-	
-	@Column(name = "dtAlteracao")
-	private LocalDate dtAlteracao;
-	
-	@Column(name = "dtCriacao")
-	private LocalDate dtCriacao;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

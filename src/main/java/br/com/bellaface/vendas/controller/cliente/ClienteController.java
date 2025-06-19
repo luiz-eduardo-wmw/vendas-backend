@@ -1,6 +1,5 @@
 package br.com.bellaface.vendas.controller.cliente;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bellaface.vendas.dto.cliente.CadastroDeCliente;
@@ -24,6 +24,16 @@ public class ClienteController {
 		private ClienteRepository clienteRepository;
 		
 		@GetMapping
+	    public ResponseEntity<Cliente> getClienteByDsLogin(@RequestParam String dsLogin) {
+	        Cliente cliente = (Cliente) clienteRepository.findByDsLogin(dsLogin);
+
+	        if (cliente == null) {
+	            return ResponseEntity.notFound().build();
+	        }
+	        return ResponseEntity.ok(cliente);
+	    }
+		
+		@GetMapping("listaDeClientes")
 		public ResponseEntity<?> listaDeClientes() {
 			List<Cliente> listaDeClientes = clienteRepository.findAll();
 			return ResponseEntity.ok().body(Collections.singletonMap("clientes", listaDeClientes));
@@ -31,16 +41,9 @@ public class ClienteController {
 		
 		@PostMapping
 		public Cliente cadastrar(@RequestBody CadastroDeCliente cadastroDeCliente) {
-			// VALIDAÇÃO SERÁ NO FRONT
-			// Alterar tudo para messages
-			String flTipoAlteracao = "I"; 
-			String flAtivo = "S";
-			LocalDate dtAlteracao = LocalDate.now();
-			LocalDate dtCriacao = LocalDate.now();
-			
 			String encryptedPassword = new BCryptPasswordEncoder().encode(cadastroDeCliente.dsSenha());
 			
-			return clienteRepository.save(new Cliente(cadastroDeCliente.cdCliente(), cadastroDeCliente.nmRazaoSocial(), cadastroDeCliente.dsLogin(), encryptedPassword, flTipoAlteracao, flAtivo, dtAlteracao, dtCriacao));
+			return clienteRepository.save(new Cliente(cadastroDeCliente.cdCliente(), cadastroDeCliente.nmRazaoSocial(), cadastroDeCliente.dsLogin(), encryptedPassword));
 		}	
 
 }

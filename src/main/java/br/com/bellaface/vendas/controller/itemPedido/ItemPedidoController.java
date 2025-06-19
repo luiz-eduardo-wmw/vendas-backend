@@ -1,6 +1,6 @@
 package br.com.bellaface.vendas.controller.itemPedido;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.bellaface.vendas.dto.itemPedido.CadastroDeItemPedido;
 import br.com.bellaface.vendas.model.itemPedido.ItemPedido;
 import br.com.bellaface.vendas.repository.itemPedido.ItemPedidoRepository;
+import br.com.bellaface.vendas.service.itemPedido.ItemPedidoService;
 
 @RestController
 @RequestMapping("itemPedido")
@@ -23,27 +24,51 @@ public class ItemPedidoController {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	@GetMapping
-	public ResponseEntity<?> listaDeItensPedido() {
-		List<ItemPedido> listaDeItensPedido = itemPedidoRepository.findAll();
-		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDeItensPedido));
-	}
+	@Autowired
+	private ItemPedidoService itemPedidoService;
 	
-	@GetMapping("nuPedido")
+	@GetMapping("listaItensPorNuPedido")
 	public ResponseEntity<?> listaItensPedidoByNuPedido(@RequestParam Integer nuPedido) {
 		List<ItemPedido> listaDeItensPedido = itemPedidoRepository.findByNuPedido(nuPedido);
 		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDeItensPedido));
 	}
 	
+	@GetMapping("listaItensPorNuPedidoECdProduto")
+	public ResponseEntity<?> listaItensPedidoByNuPedidoAndCdProduto(@RequestParam Integer nuPedido, @RequestParam Integer cdProduto) {
+		List<ItemPedido> listaDeItensPedido = itemPedidoRepository.findByNuPedido(nuPedido);
+		return ResponseEntity.ok().body(Collections.singletonMap("itenspedido", listaDeItensPedido));
+	}
+	
 	@PostMapping
-	public ItemPedido cadastrar(@RequestBody CadastroDeItemPedido cadastroDeItemPedido) {
-		// VALIDAÇÃO SERÁ NO FRONT
-		// Alterar tudo para messages
-		String flTipoAlteracao = "I"; 
-		String flAtivo = "S";
-		LocalDate dtAlteracao = LocalDate.now();
-		LocalDate dtCriacao = LocalDate.now();
+	public List<ItemPedido> insereItensNoPedido(@RequestBody List<CadastroDeItemPedido> itensPedido) {
+		Integer proximoNuPedido = null;
+		Integer proximoCdItemPedido = null;
 		
-		return itemPedidoRepository.save(new ItemPedido(cadastroDeItemPedido.cdItemPedido(), cadastroDeItemPedido.cdProduto(), cadastroDeItemPedido.nuPedido(), cadastroDeItemPedido.qtdItem(), cadastroDeItemPedido.vlUnitario(), cadastroDeItemPedido.vlTotalItem(), flTipoAlteracao, flAtivo, dtAlteracao, dtCriacao));
+	    if (itemPedidoService.existeNuPedidoNulo(itensPedido)) {
+	        proximoNuPedido = itemPedidoService.proximoNuPedido();
+	    }
+	    
+	    if (itemPedidoService.existeCdItemPedidoNulo(itensPedido)) {
+	    	proximoCdItemPedido = itemPedidoService.proximoCdItemPedido();
+	    }
+		
+	    List<ItemPedido> itensSalvos = new ArrayList<>();
+
+	    for (CadastroDeItemPedido dto : itensPedido) {
+	        Integer nuPedido = dto.nuPedido() != null ? dto.nuPedido() : proximoNuPedido;
+
+	        ItemPedido item = new ItemPedido(
+	            proximoCdItemPedido++, 
+	            dto.cdProduto(),
+	            nuPedido,
+	            dto.qtdItem(),
+	            dto.vlUnitario(),
+	            dto.vlTotalItem()
+	        );
+
+	        itensSalvos.add(itemPedidoRepository.save(item));
+	    }
+
+	    return itensSalvos;
 	}
 }

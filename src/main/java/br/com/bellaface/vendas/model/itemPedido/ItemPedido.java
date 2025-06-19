@@ -34,16 +34,4 @@ public class ItemPedido {
 	
 	@Column(name = "vlTotalItem")
 	private Double vlTotalItem;
-	
-	@Column(name = "flTipoAlteracao")
-	private String flTipoAlteracao;
-	
-	@Column(name = "flAtivo")
-	private String flAtivo;
-	
-	@Column(name = "dtAlteracao")
-	private LocalDate dtAlteracao;
-	
-	@Column(name = "dtCriacao")
-	private LocalDate dtCriacao;
 }

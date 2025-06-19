@@ -1,6 +1,6 @@
 package br.com.bellaface.vendas.controller.produto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,14 +31,7 @@ public class ProdutoController {
 	
 	@PostMapping
 	public Produto cadastrar(@RequestBody CadastroDeProduto cadastroDeProduto) {
-		// VALIDAÇÃO SERÁ NO FRONT
-		// Alterar tudo para messages
-		String flTipoAlteracao = "I"; 
-		String flAtivo = "S";
-		LocalDate dtAlteracao = LocalDate.now();
-		LocalDate dtCriacao = LocalDate.now();
-		
-		return produtoRepository.save(new Produto(cadastroDeProduto.cdProduto(), cadastroDeProduto.nmProduto(), cadastroDeProduto.dsProduto(), cadastroDeProduto.vlProduto(), flTipoAlteracao, flAtivo, dtAlteracao, dtCriacao));
+		return produtoRepository.save(new Produto(cadastroDeProduto.cdProduto(), cadastroDeProduto.nmProduto(), cadastroDeProduto.dsProduto(), cadastroDeProduto.vlProduto(), LocalDateTime.now()));
 	}
 	
 

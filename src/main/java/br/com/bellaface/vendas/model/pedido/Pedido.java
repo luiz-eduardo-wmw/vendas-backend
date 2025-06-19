@@ -1,9 +1,12 @@
 package br.com.bellaface.vendas.model.pedido;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -17,7 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Pedido {
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "nuPedido")
 	private Integer nuPedido;
 	
 	@Column(name = "cdCliente")
@@ -28,13 +32,22 @@ public class Pedido {
 	
 	@Column(name = "dsObsPedido")
 	private String dsObsPedido;
-	
-	@Column(name = "flTipoAlteracao")
-	private String flTipoAlteracao;
-	
-	@Column(name = "dtAlteracao")
-	private LocalDate dtAlteracao;
+	 
+	@Column(name = "flstatuspedido")
+	private String flStatusPedido;
 	
 	@Column(name = "dtCriacao")
-	private LocalDate dtCriacao;
+	private LocalDateTime dtCriacao;
+	
+	public void setFlStatusPedido(String flStatusPedido) {
+	    this.flStatusPedido = flStatusPedido;
+	}
+
+	public void setDsObsPedido(String dsObsPedido) {
+		this.dsObsPedido = dsObsPedido;
+	}
+
+	public void setVlTotalPedido(Double vlTotalPedido) {
+		this.vlTotalPedido = vlTotalPedido;
+	}
 }
