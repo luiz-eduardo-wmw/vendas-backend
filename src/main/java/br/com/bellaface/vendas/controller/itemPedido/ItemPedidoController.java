@@ -54,16 +54,16 @@ public class ItemPedidoController {
 		
 	    List<ItemPedido> itensSalvos = new ArrayList<>();
 
-	    for (CadastroDeItemPedido dto : itensPedido) {
-	        Integer nuPedido = dto.nuPedido() != null ? dto.nuPedido() : proximoNuPedido;
+	    for (CadastroDeItemPedido cadastroDeItemPedido : itensPedido) {
+	        Integer nuPedido = cadastroDeItemPedido.nuPedido() != null ? cadastroDeItemPedido.nuPedido() : proximoNuPedido;
 
 	        ItemPedido item = new ItemPedido(
 	            proximoCdItemPedido++, 
-	            dto.cdProduto(),
+	            cadastroDeItemPedido.cdProduto(),
 	            nuPedido,
-	            dto.qtdItem(),
-	            dto.vlUnitario(),
-	            dto.vlTotalItem()
+	            cadastroDeItemPedido.qtdItem(),
+	            cadastroDeItemPedido.vlUnitario(),
+	            cadastroDeItemPedido.vlTotalItem()
 	        );
 
 	        itensSalvos.add(itemPedidoRepository.save(item));
