@@ -1,6 +1,5 @@
 package br.com.bellaface.vendas.controller.pedido;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bellaface.vendas.dto.pedido.AtualizaPedido;
 import br.com.bellaface.vendas.dto.pedido.CadastroDePedido;
 import br.com.bellaface.vendas.model.pedido.Pedido;
 import br.com.bellaface.vendas.repository.pedido.PedidoRepository;
@@ -92,7 +92,7 @@ public class PedidoController {
 	        Pedido pedido = pedidoOpt.get();
 	        pedido.setFlStatusPedido(atualizaPedido.flStatusPedido());
 	        pedido.setDsObsPedido(atualizaPedido.dsObsPedido());
-	        pedido.setVlTotalPedido(atualizaPedido.vlTotalPedido());
+	        pedido.setVlTotalPedido(pedidoService.validaTotalPedido(nuPedido));
 	        pedidoRepository.save(pedido);
 	        return ResponseEntity.ok().build();
 	    }
